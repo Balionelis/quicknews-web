@@ -13,11 +13,11 @@ export const fetchNews = async (query = 'general') => {
   }
 
   const yesterday = getYesterdayDate();
-  const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+//   console.log(yesterday);
 
   try {
     const response = await fetch(
-      proxyUrl + `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&from=${yesterday}&sortBy=relevancy&language=en&apiKey=${NEWS_API_KEY}`
+      `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&from=${yesterday}&sortBy=relevancy&language=en&apiKey=${NEWS_API_KEY}`
     );
     
     if (!response.ok) {
