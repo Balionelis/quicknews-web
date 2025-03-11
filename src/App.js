@@ -12,7 +12,7 @@ function App() {
         <NewsList />
       </main>
       <footer>
-        <p>Powered by News API & Gemini AI</p>
+        <p>Powered by Google News RSS & Gemini AI</p>
       </footer>
     </div>
   );

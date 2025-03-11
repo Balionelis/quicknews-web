@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NewsItem from './NewsItem';
-import { fetchNews, showErrorAlert } from '../services/newsService';
+import { fetchGoogleNewsRSS, showErrorAlert } from '../services/googleNewsService';
 import { getAISelection, parseAISelection } from '../services/aiService';
 
 const NewsList = () => {
@@ -17,7 +17,8 @@ const NewsList = () => {
 
     setLoading(true);
     try {
-      const articles = await fetchNews(trimmedQuery);
+      // Fetch news from Google News RSS instead of NewsAPI
+      const articles = await fetchGoogleNewsRSS(trimmedQuery);
       const titles = articles.map(article => article.title);
       const aiAnswer = await getAISelection(trimmedQuery, titles);
       const selectedIndices = parseAISelection(aiAnswer, titles);
