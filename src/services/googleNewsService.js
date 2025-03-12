@@ -51,16 +51,3 @@ export const fetchGoogleNewsRSS = async (query = 'general') => {
       throw new Error(`Failed to fetch news: ${error.message}`);
     }
   };
-  
-  export const showErrorAlert = (message) => {
-    alert(`
-    🚨 News Fetch Error 🚨
-  
-    ${message}
-  
-    Troubleshooting Tips:
-    1. Check your internet connection
-    2. Try a different search query
-    3. Google News might be temporarily unavailable
-    `);
-  };
