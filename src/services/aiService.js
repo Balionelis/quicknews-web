@@ -4,13 +4,17 @@ export const getAISelection = async (query, titles) => {
   try {
     console.log('Sending request to external API with query:', query);
     
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    if (typeof window !== 'undefined') {
+      headers['Origin'] = window.location.origin;
+      headers['Referer'] = window.location.href;
+    }
+    
     const response = await fetch(`${API_URL}/api/gemini`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Origin': 'https://quicknews-web.vercel.app',
-        'Referer': 'https://quicknews-web.vercel.app'
-      },
+      headers,
       body: JSON.stringify({ query, titles }),
     });
 
