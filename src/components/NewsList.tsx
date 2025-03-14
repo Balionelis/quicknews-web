@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import NewsItem from './NewsItem';
 import { fetchGoogleNewsRSS } from '../services/googleNewsService';
 import { getAISelection, parseAISelection } from '../services/aiService';
+import { Article } from '../types';
 
-const NewsList = () => {
-  const [topNews, setTopNews] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [submittedQuery, setSubmittedQuery] = useState('');
+const NewsList: React.FC = () => {
+  const [topNews, setTopNews] = useState<Article[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [submittedQuery, setSubmittedQuery] = useState<string>('');
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedQuery = searchQuery.trim();
 
@@ -48,7 +49,8 @@ const NewsList = () => {
 
       {loading ? (
         <div className="loading">
-          Loading important news...
+          <div className="loading-spinner"></div>
+          <div className="loading-text">Finding important news...</div>
         </div>
       ) : (
         <>
@@ -56,7 +58,11 @@ const NewsList = () => {
             <>
               <h2>Top 5 Most Important News about "{submittedQuery}"</h2>
               {topNews.map((article, index) => (
-                <NewsItem key={index} article={article} />
+                <NewsItem 
+                  key={index} 
+                  article={article} 
+                  animationDelay={index * 100} 
+                />
               ))}
             </>
           ) : (

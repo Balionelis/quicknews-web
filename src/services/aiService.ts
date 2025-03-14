@@ -1,6 +1,6 @@
-const API_URL = 'https://quicknews-backend.vercel.app';
+const API_URL: string = 'https://quicknews-backend.vercel.app';
 
-export const getAISelection = async (query, titles) => {
+export const getAISelection = async (query: string, titles: string[]): Promise<string> => {
   try {
     const response = await fetch(`${API_URL}/api/gemini/selection`, {
       method: 'POST',
@@ -23,7 +23,7 @@ export const getAISelection = async (query, titles) => {
   }
 };
 
-export const parseAISelection = (aiAnswer, titles, topCount = 5) => {
+export const parseAISelection = (aiAnswer: string, titles: string[], topCount: number = 5): number[] => {
   try {
     const pickedNumbers = aiAnswer.split(',')
       .map(item => {

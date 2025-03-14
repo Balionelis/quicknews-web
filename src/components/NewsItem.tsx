@@ -1,7 +1,13 @@
 import React from 'react';
+import { Article } from '../types';
 
-const NewsItem = ({ article }) => {
-  const extractTitleFromHTML = (htmlString) => {
+interface NewsItemProps {
+  article: Article;
+  animationDelay?: number;
+}
+
+const NewsItem: React.FC<NewsItemProps> = ({ article, animationDelay = 0 }) => {
+  const extractTitleFromHTML = (htmlString: string): string => {
     if (!htmlString.includes('<a href=')) {
       return htmlString;
     }
@@ -9,10 +15,10 @@ const NewsItem = ({ article }) => {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlString;
     
-    return tempDiv.textContent;
+    return tempDiv.textContent || '';
   };
 
-  const extractUrlFromHTML = (htmlString) => {
+  const extractUrlFromHTML = (htmlString: string): string => {
     if (!htmlString.includes('<a href=')) {
       return article.url;
     }
@@ -24,13 +30,13 @@ const NewsItem = ({ article }) => {
     return anchor ? anchor.href : article.url;
   };
 
-  const cleanDescription = (description) => {
+  const cleanDescription = (description: string): string => {
     if (!description) return 'No description available';
     
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = description;
     
-    return tempDiv.textContent;
+    return tempDiv.textContent || 'No description available';
   };
 
   const title = extractTitleFromHTML(article.title);
@@ -38,11 +44,17 @@ const NewsItem = ({ article }) => {
   const description = cleanDescription(article.description);
 
   return (
-    <div className="news-item">
+    <div 
+      className="news-item" 
+      style={{ 
+        animationDelay: `${animationDelay}ms`,
+        animationFillMode: 'backwards'
+      }}
+    >
       <h3>{title}</h3>
       <p>{description}</p>
       <div className="news-meta">
-        <span className="news-date"> {new Date(article.publishedAt).toLocaleDateString()}</span>
+        <span className="news-date">{new Date(article.publishedAt).toLocaleDateString()}</span>
       </div>
       <a 
         href={url} 
@@ -50,7 +62,7 @@ const NewsItem = ({ article }) => {
         rel="noopener noreferrer"
         className="read-more-btn"
       >
-        Read Full Article
+        Read Article
       </a>
     </div>
   );

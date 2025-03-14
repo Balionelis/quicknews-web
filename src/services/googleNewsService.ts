@@ -1,4 +1,18 @@
-export const fetchGoogleNewsRSS = async (query = 'general') => {
+import { Article } from '../types';
+
+interface RSSResponse {
+  status: string;
+  message?: string;
+  items: Array<{
+    title: string;
+    description?: string;
+    link: string;
+    pubDate: string;
+    author?: string;
+  }>;
+}
+
+export const fetchGoogleNewsRSS = async (query: string = 'general'): Promise<Article[]> => {
   try {
     const googleNewsUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
     const rssToJsonApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(googleNewsUrl)}`;
@@ -9,7 +23,7 @@ export const fetchGoogleNewsRSS = async (query = 'general') => {
       throw new Error(`Failed to fetch news: ${response.status} ${response.statusText}`);
     }
     
-    const data = await response.json();
+    const data: RSSResponse = await response.json();
     
     if (data.status !== 'ok') {
       throw new Error(`RSS API error: ${data.message || 'Unknown error'}`);
@@ -21,7 +35,7 @@ export const fetchGoogleNewsRSS = async (query = 'general') => {
       throw new Error(`No articles found for query: ${query}`);
     }
     
-    const articles = items.map(item => ({
+    const articles: Article[] = items.map(item => ({
       title: item.title,
       description: item.description || 'No description available',
       url: item.link,
@@ -32,7 +46,7 @@ export const fetchGoogleNewsRSS = async (query = 'general') => {
     }));
     
     return articles;
-  } catch (error) {
+  } catch (error: any) {
     console.error('News Fetch Error:', {
       message: error.message,
       query: query,
