@@ -1,37 +1,22 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
-
-if (!GEMINI_API_KEY) {
-  console.error("Gemini API key is missing. Set REACT_APP_GEMINI_API_KEY in .env file.");
-}
-
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-
 export const getAISelection = async (query, titles) => {
-  if (!GEMINI_API_KEY) {
-    console.error("No API key available");
-    return "1,2,3,4,5";
-  }
-
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const response = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query, titles }),
+    });
 
-    const prompt = ( 
-      `I have a list of news headlines related to '${query}'.\n\n` +
-      `Here are the headlines:\n${titles.map((t, i) => `${i + 1}. ${t}`).join('\n')}\n\n` +
-      `Your task is to select the 5 most important and relevant headlines based on their significance, impact, and relevance to '${query}'.\n` +
-      `Only respond with the numbers of the selected headlines in a comma-separated format (e.g., 1,2,5,7,9) and nothing else.`
-    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to get AI selection');
+    }
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text().trim();
-    // console.log(result)
-
-    return text;
+    const data = await response.json();
+    return data.selection;
   } catch (error) {
-    console.error('Error with Gemini API:', error);
+    console.error('Error with AI selection:', error);
     return "1,2,3,4,5";
   }
 };
