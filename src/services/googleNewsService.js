@@ -1,6 +1,5 @@
 export const fetchGoogleNewsRSS = async (query = 'general') => {
   try {
-    // Use a public RSS to JSON API service
     const googleNewsUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`;
     const rssToJsonApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(googleNewsUrl)}`;
     
