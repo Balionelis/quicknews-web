@@ -1,35 +1,37 @@
-const API_URL = 'https://quicknews-api.vercel.app';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
+
+if (!GEMINI_API_KEY) {
+  console.error("Gemini API key is missing. Set REACT_APP_GEMINI_API_KEY in .env file.");
+}
+
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export const getAISelection = async (query, titles) => {
+  if (!GEMINI_API_KEY) {
+    console.error("No API key available");
+    return "1,2,3,4,5";
+  }
+
   try {
-    console.log('Sending request to external API with query:', query);
-    
-    const headers = {
-      'Content-Type': 'application/json'
-    };
-    if (typeof window !== 'undefined') {
-      headers['Origin'] = window.location.origin;
-      headers['Referer'] = window.location.href;
-    }
-    
-    const response = await fetch(`${API_URL}/api/gemini`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ query, titles }),
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const data = await response.json();
-    
-    if (!response.ok) {
-      console.error('API error status:', response.status);
-      console.error('API error details:', data);
-      return data.fallbackSelection || "1,2,3,4,5";
-    }
+    const prompt = ( 
+      `I have a list of news headlines related to '${query}'.\n\n` +
+      `Here are the headlines:\n${titles.map((t, i) => `${i + 1}. ${t}`).join('\n')}\n\n` +
+      `Your task is to select the 5 most important and relevant headlines based on their significance, impact, and relevance to '${query}'.\n` +
+      `Only respond with the numbers of the selected headlines in a comma-separated format (e.g., 1,2,5,7,9) and nothing else.`
+    );
 
-    console.log('API response received:', data);
-    return data.selection;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text().trim();
+    // console.log(result)
+
+    return text;
   } catch (error) {
-    console.error('Error calling API:', error.message);
+    console.error('Error with Gemini API:', error);
     return "1,2,3,4,5";
   }
 };
