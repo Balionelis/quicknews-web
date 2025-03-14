@@ -1,5 +1,7 @@
 export const getAISelection = async (query, titles) => {
   try {
+    console.log('Sending request to backend API with query:', query);
+    
     const response = await fetch('/api/gemini', {
       method: 'POST',
       headers: {
@@ -8,16 +10,18 @@ export const getAISelection = async (query, titles) => {
       body: JSON.stringify({ query, titles }),
     });
 
+    const data = await response.json();
+    
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('API error:', errorData);
-      return errorData.fallbackSelection || "1,2,3,4,5";
+      console.error('API error status:', response.status);
+      console.error('API error details:', data);
+      return data.fallbackSelection || "1,2,3,4,5";
     }
 
-    const data = await response.json();
+    console.log('Backend API response received:', data);
     return data.selection;
   } catch (error) {
-    console.error('Error calling backend API:', error);
+    console.error('Error calling backend API:', error.message);
     return "1,2,3,4,5";
   }
 };

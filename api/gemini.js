@@ -5,14 +5,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { query, titles } = req.body;
-
-  if (!query || !titles || !Array.isArray(titles)) {
-    return res.status(400).json({ error: 'Invalid request data' });
+  const apiKey = process.env.GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    console.error('Missing Gemini API key in environment variables');
+    return res.status(500).json({ 
+      error: 'Server configuration error', 
+      fallbackSelection: "1,2,3,4,5" 
+    });
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const { query, titles } = req.body;
+    
+    if (!query || !titles || !Array.isArray(titles)) {
+      return res.status(400).json({ error: 'Invalid request data' });
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const prompt = ( 
@@ -28,7 +38,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ selection: text });
   } catch (error) {
-    console.error('Error with Gemini API:', error);
+    console.error('Error with Gemini API:', error.message);
     return res.status(500).json({ 
       error: 'Failed to process request', 
       fallbackSelection: "1,2,3,4,5" 
