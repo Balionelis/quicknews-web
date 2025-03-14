@@ -1,8 +1,10 @@
+const API_URL = 'https://quicknews-api.vercel.app/';
+
 export const getAISelection = async (query, titles) => {
   try {
-    console.log('Sending request to backend API with query:', query);
+    console.log('Sending request to external API with query:', query);
     
-    const response = await fetch('/api/gemini', {
+    const response = await fetch(`${API_URL}/api/gemini`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -18,10 +20,10 @@ export const getAISelection = async (query, titles) => {
       return data.fallbackSelection || "1,2,3,4,5";
     }
 
-    console.log('Backend API response received:', data);
+    console.log('API response received:', data);
     return data.selection;
   } catch (error) {
-    console.error('Error calling backend API:', error.message);
+    console.error('Error calling API:', error.message);
     return "1,2,3,4,5";
   }
 };
