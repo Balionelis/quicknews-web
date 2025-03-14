@@ -8,7 +8,8 @@ export const getAISelection = async (query, titles) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Origin': 'https://quicknews-web.vercel.app'
+        'Origin': 'https://quicknews-web.vercel.app',
+        'Referer': 'https://quicknews-web.vercel.app'
       },
       body: JSON.stringify({ query, titles }),
     });
