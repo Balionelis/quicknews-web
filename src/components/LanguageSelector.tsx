@@ -8,17 +8,29 @@ interface LanguageSelectorProps {
 
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ onLanguageChange }) => {
   const [languages] = useState<Language[]>([
+    { code: 'ar', name: 'العربية' },
+    { code: 'bn', name: 'বাংলা' },
+    { code: 'zh', name: '中文' },
+    { code: 'nl', name: 'Nederlands' },
     { code: 'en', name: 'English' },
-    { code: 'es', name: 'Spanish' },
-    { code: 'fr', name: 'French' },
-    { code: 'de', name: 'German' },
-    { code: 'it', name: 'Italian' },
-    { code: 'pt', name: 'Portuguese' },
-    { code: 'ru', name: 'Russian' },
-    { code: 'zh', name: 'Chinese' },
-    { code: 'ja', name: 'Japanese' },
-    { code: 'ko', name: 'Korean' },
-    { code: 'lt', name: "Lithuanian"}
+    { code: 'fi', name: 'Suomi' },
+    { code: 'fr', name: 'Français' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'hi', name: 'हिन्दी' },
+    { code: 'it', name: 'Italiano' },
+    { code: 'ja', name: '日本語' },
+    { code: 'ko', name: '한국어' },
+    { code: 'lt', name: 'Lietuvių' },
+    { code: 'no', name: 'Norsk' },
+    { code: 'pl', name: 'Polski' },
+    { code: 'pt', name: 'Português' },
+    { code: 'ru', name: 'Русский' },
+    { code: 'es', name: 'Español' },
+    { code: 'sv', name: 'Svenska' },
+    { code: 'th', name: 'ไทย' },
+    { code: 'tr', name: 'Türkçe' },
+    { code: 'uk', name: 'Українська' },
+    { code: 'vi', name: 'Tiếng Việt' }
   ]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const [isChangingLanguage, setIsChangingLanguage] = useState<boolean>(false);
