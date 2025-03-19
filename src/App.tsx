@@ -8,6 +8,7 @@ const App: React.FC = () => {
     stars: null,
     error: false
   });
+  const [language, setLanguage] = useState('en');
 
   useEffect(() => {
     const fetchGithubStats = async () => {
@@ -44,7 +45,7 @@ const App: React.FC = () => {
         <h1>QuickNews</h1>
       </header>
       <main>
-        <NewsList />
+        <NewsList language={language} onLanguageChange={setLanguage} />
       </main>
       <footer>
         <div className="footer-content">
