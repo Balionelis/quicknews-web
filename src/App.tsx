@@ -10,7 +10,6 @@ const App: React.FC = () => {
     error: false
   });
   const [language, setLanguage] = useState('en');
-
   useEffect(() => {
     const fetchGithubStats = async () => {
       try {
@@ -91,6 +90,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </footer>
+      <Analytics />
     </div>
   );
 }
