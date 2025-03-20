@@ -1,4 +1,7 @@
 # QuickNews Web
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a62697c917b84df099820ac6322103c6)](https://app.codacy.com/gh/Balionelis/quicknews-web?utm_source=github.com&utm_medium=referral&utm_content=Balionelis/quicknews-web&utm_campaign=Badge_Grade)
+
 A lightweight web application that fetches, filters, and displays personalized news using AI curation. Combines Google News RSS feeds and Gemini AI to deliver your top 5 relevant news articles in seconds.
 
 ![License](https://img.shields.io/github/license/Balionelis/quicknews-web)
