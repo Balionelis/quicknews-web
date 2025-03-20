@@ -1,9 +1,12 @@
-# QuickNews Web
-A lightweight web application that fetches, filters, and displays personalized news using AI curation. Combines Google News RSS feeds and Gemini AI to deliver your top 5 relevant news articles in seconds.
-
-![License](https://img.shields.io/github/license/Balionelis/quicknews-web)
-![TypeScript](https://img.shields.io/badge/typescript-4.9.5-blue)
-![React](https://img.shields.io/badge/react-18.2.0-blue)
+<p align="center">
+  <img src="https://i.imgur.com/xsAz01J.png" alt="Quicknews Logo">
+</p>
+<p align="center">
+  <img src="https://img.shields.io/github/license/Balionelis/quicknews-web" alt="License">
+  <img src="https://img.shields.io/badge/typescript-4.9.5-blue" alt="TypeScript">
+  <img src="https://img.shields.io/badge/react-18.2.0-blue" alt="React">
+  <a href="https://app.codacy.com/gh/Balionelis/quicknews-web/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/018cad6014f2421f90025b6f35f87360" alt="Codacy Badge"></a>
+</p>
 
 ## Features
 - 🔍 Search for news on any topic
