@@ -26,5 +26,5 @@ export const getLanguageFromCountry = (countryCode: string): string => {
     ['JP', 'ja'], ['KR', 'ko']
   ]);
 
-  return countryLanguageMap.get(countryCode) || 'en';
+  return countryLanguageMap.get(countryCode) ?? 'en';
 };
