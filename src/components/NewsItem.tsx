@@ -8,35 +8,35 @@ interface NewsItemProps {
 
 const NewsItem: React.FC<NewsItemProps> = ({ article, animationDelay = 0 }) => {
   const extractTitleFromHTML = (htmlString: string): string => {
-    if (!htmlString.includes('<a href=')) {
+    if (!htmlString.includes('href=')) {
       return htmlString;
     }
     
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlString;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
     
-    return tempDiv.textContent || '';
+    return doc.body.textContent || '';
   };
 
   const extractUrlFromHTML = (htmlString: string): string => {
-    if (!htmlString.includes('<a href=')) {
+    if (!htmlString.includes('href=')) {
       return article.url;
     }
     
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlString;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
     
-    const anchor = tempDiv.querySelector('a');
+    const anchor = doc.querySelector('a');
     return anchor ? anchor.href : article.url;
   };
 
   const cleanDescription = (description: string): string => {
     if (!description) return 'No description available';
     
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = description;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(description, 'text/html');
     
-    return tempDiv.textContent || 'No description available';
+    return doc.body.textContent || 'No description available';
   };
 
   const title = extractTitleFromHTML(article.title);

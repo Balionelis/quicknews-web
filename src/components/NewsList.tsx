@@ -74,7 +74,9 @@ const NewsList: React.FC<NewsListProps> = ({ language, onLanguageChange }) => {
       const titles = articles.map(article => article.title);
       const aiAnswer = await getAISelection(trimmedQuery, titles);
       const selectedIndices = parseAISelection(aiAnswer, titles);
-      const importantNews = selectedIndices.map(index => articles[index]);
+      const importantNews = selectedIndices
+        .filter(index => index >= 0 && index < articles.length)
+        .map(index => articles[index]);
       
       setTopNews(importantNews);
       setSubmittedQuery(trimmedQuery);
