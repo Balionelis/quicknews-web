@@ -87,12 +87,17 @@ const NewsList: React.FC<NewsListProps> = ({ language, onLanguageChange }) => {
       setTopNews([]);
       setSubmittedQuery('');
       
-      if (error.message && error.message.includes('429')) {
-        setError("Too many requests. Please wait a minute before trying again.");
-      } else if (error.message && error.message.includes('converting new feeds')) {
-        setError("API rate limit reached. Please wait a minute before trying again.");
+      if (typeof error.message === 'string') {
+        const errorMessage = error.message.replace(/[<>&"']/g, '');
+        if (errorMessage.includes('429')) {
+          setError("Too many requests. Please wait a minute before trying again.");
+        } else if (errorMessage.includes('converting new feeds')) {
+          setError("API rate limit reached. Please wait a minute before trying again.");
+        } else {
+          setError(errorMessage || 'Failed to fetch news');
+        }
       } else {
-        setError(error.message || 'Failed to fetch news');
+        setError('Failed to fetch news');
       }
     } finally {
       setLoading(false);

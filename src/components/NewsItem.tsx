@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import { Article } from '../types';
 
 interface NewsItemProps {
@@ -13,7 +14,8 @@ const NewsItem: React.FC<NewsItemProps> = ({ article, animationDelay = 0 }) => {
     }
     
     const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, 'text/html');
+    const sanitizedHTML = DOMPurify.sanitize(htmlString);
+    const doc = parser.parseFromString(sanitizedHTML, 'text/html');
     
     return doc.body.textContent || '';
   };
@@ -24,7 +26,8 @@ const NewsItem: React.FC<NewsItemProps> = ({ article, animationDelay = 0 }) => {
     }
     
     const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, 'text/html');
+    const sanitizedHTML = DOMPurify.sanitize(htmlString);
+    const doc = parser.parseFromString(sanitizedHTML, 'text/html');
     
     const anchor = doc.querySelector('a');
     return anchor ? anchor.href : article.url;
@@ -34,7 +37,8 @@ const NewsItem: React.FC<NewsItemProps> = ({ article, animationDelay = 0 }) => {
     if (!description) return 'No description available';
     
     const parser = new DOMParser();
-    const doc = parser.parseFromString(description, 'text/html');
+    const sanitizedHTML = DOMPurify.sanitize(description);
+    const doc = parser.parseFromString(sanitizedHTML, 'text/html');
     
     return doc.body.textContent || 'No description available';
   };
