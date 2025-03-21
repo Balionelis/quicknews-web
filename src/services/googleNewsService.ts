@@ -12,12 +12,10 @@ interface RSSResponse {
   }>;
 }
 
-const newsCache: {
-  [key: string]: {
-    timestamp: number;
-    articles: Article[];
-  }
-} = {};
+const newsCache = new Map<string, {
+  timestamp: number;
+  articles: Article[];
+}>();
 
 const MAX_CACHE_AGE = 5 * 60 * 1000;
 
@@ -29,7 +27,7 @@ export const fetchGoogleNewsRSS = async (
   try {
     const cacheKey = `${query}_${language}_${daysBack}`;
     
-    const cachedResult = newsCache[cacheKey];
+    const cachedResult = newsCache.get(cacheKey);
     if (cachedResult && (Date.now() - cachedResult.timestamp) < MAX_CACHE_AGE) {
       console.log('Using cached news results');
       return cachedResult.articles;
@@ -38,7 +36,7 @@ export const fetchGoogleNewsRSS = async (
     const dateQuery = daysBack > 1 ? ` when:${daysBack}d` : '';
     const fullQuery = `${query}${dateQuery}`;
     
-    const googleNewsUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(fullQuery)}&hl=${language}&gl=US&ceid=US:${language}`;
+    const googleNewsUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(fullQuery)}&hl=${encodeURIComponent(language)}&gl=US&ceid=US:${encodeURIComponent(language)}`;
     const rssToJsonApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(googleNewsUrl)}`;
     
     const response = await fetch(rssToJsonApiUrl);
@@ -48,7 +46,7 @@ export const fetchGoogleNewsRSS = async (
       
       if (language !== 'en') {
         const englishCacheKey = `${query}_en_${daysBack}`;
-        const englishCache = newsCache[englishCacheKey];
+        const englishCache = newsCache.get(englishCacheKey);
         if (englishCache && (Date.now() - englishCache.timestamp) < MAX_CACHE_AGE) {
           console.log('Using English cached results as fallback');
           return englishCache.articles;
@@ -57,7 +55,7 @@ export const fetchGoogleNewsRSS = async (
       
       if (daysBack > 1) {
         const todayCacheKey = `${query}_${language}_1`;
-        const todayCache = newsCache[todayCacheKey];
+        const todayCache = newsCache.get(todayCacheKey);
         if (todayCache && (Date.now() - todayCache.timestamp) < MAX_CACHE_AGE) {
           console.log('Using today cached results as fallback');
           return todayCache.articles;
@@ -95,10 +93,10 @@ export const fetchGoogleNewsRSS = async (
       }
     }));
     
-    newsCache[cacheKey] = {
+    newsCache.set(cacheKey, {
       timestamp: Date.now(),
       articles: articles
-    };
+    });
     
     return articles;
   } catch (error: any) {
