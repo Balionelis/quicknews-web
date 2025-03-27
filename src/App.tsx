@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Analytics } from "@vercel/analytics/react"
 import NewsList from './components/NewsList';
+import ThemeToggle from './components/ThemeToggle';
 import './styles.css';
 
 const App: React.FC = () => {
@@ -10,6 +11,7 @@ const App: React.FC = () => {
     error: false
   });
   const [language, setLanguage] = useState('en');
+
   useEffect(() => {
     const fetchGithubStats = async () => {
       try {
@@ -43,6 +45,7 @@ const App: React.FC = () => {
     <div className="app">
       <header>
         <h1>QuickNews</h1>
+        <ThemeToggle />
       </header>
       <main>
         <NewsList language={language} onLanguageChange={setLanguage} />

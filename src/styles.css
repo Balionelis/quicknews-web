@@ -1,14 +1,78 @@
 :root {
-  --primary-color: #000000;
-  --secondary-color: #333333;
-  --background-color: #ffffff;
-  --text-color: #000000;
-  --card-background: #ffffff;
-  --shadow-subtle: 0 4px 6px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.12);
-  --accent-color: #777777;
-  --border-color: #e0e0e0;
-  --select-background: #f9f9f9;
+  /* Light Mode (Default) */
+  --primary-color-light: #2C3E50;
+  --secondary-color-light: #34495E;
+  --background-color-light: #ECF0F1;
+  --text-color-light: #2C3E50;
+  --card-background-light: #FFFFFF;
+  --accent-color-light: #7F8C8D;
+  --border-color-light: #BDC3C7;
+  --select-background-light: #F8F9FA;
+  
+  /* Dark Mode */
+  --primary-color-dark: #FFFFFF;
+  --secondary-color-dark: #8899A6;
+  --background-color-dark: #15202B;
+  --card-background-dark: #192734;
+  --hover-color-dark: #22303C;
+  --border-color-dark: #38444D;
+  --text-color-dark: #FFFFFF;
+  --accent-color-dark: #1DA1F2;
+  --select-background-dark: #22303C;
+
+  /* Default to Light Mode */
+  --primary-color: var(--primary-color-light);
+  --secondary-color: var(--secondary-color-light);
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+  --card-background: var(--card-background-light);
+  --accent-color: var(--accent-color-light);
+  --border-color: var(--border-color-light);
+  --select-background: var(--select-background-light);
+}
+
+body.dark-mode {
+  --primary-color: var(--primary-color-dark);
+  --secondary-color: var(--secondary-color-dark);
+  --background-color: var(--background-color-dark);
+  --text-color: var(--text-color-dark);
+  --card-background: var(--card-background-dark);
+  --accent-color: var(--accent-color-dark);
+  --border-color: var(--border-color-dark);
+  --select-background: var(--hover-color-dark);
+}
+
+body.dark-mode a {
+  color: #1DA1F2;
+}
+
+body.dark-mode .news-item {
+  border-color: var(--border-color);
+}
+
+body.dark-mode .news-item:hover {
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+  background-color: var(--hover-color-dark);
+}
+
+body.dark-mode .theme-toggle {
+  background-color: var(--card-background);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .github-stat {
+  border-color: var(--border-color);
+}
+
+body.dark-mode .loading-spinner {
+  border-color: rgba(255, 255, 255, 0.1);
+  border-top-color: var(--accent-color-dark);
+}
+
+body.dark-mode .error-message {
+  background-color: var(--hover-color-dark);
+  color: #FFA500;
+  border-color: var(--border-color-dark);
 }
 
 * {
@@ -38,6 +102,7 @@ body {
 }
 
 header {
+  position: relative;
   text-align: center;
   padding: 40px 0;
   margin-bottom: 30px;
@@ -66,6 +131,27 @@ header h1::after {
   width: 40px;
   height: 3px;
   background-color: var(--primary-color);
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: var(--select-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.theme-toggle:hover {
+  background-color: var(--border-color);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .search-form {
@@ -361,7 +447,6 @@ footer {
   }
 }
 
-/* Responsive Adjustments */
 @media (max-width: 600px) {
   .app {
     padding: 15px;
@@ -414,4 +499,36 @@ footer {
     gap: 10px;
     align-items: center;
   }
+
+  .theme-toggle {
+    right: -10px;
+    padding: 6px 10px;
+    font-size: 20px;
+  }
+}
+
+body.dark-mode .search-form input {
+  background-color: var(--card-background);
+  color: var(--text-color-dark);
+  border-color: var(--border-color-dark);
+}
+
+body.dark-mode .search-form button {
+  background-color: var(--accent-color-dark);
+}
+
+body.dark-mode .news-item h3 {
+  color: var(--primary-color-dark);
+}
+
+body.dark-mode .news-item p {
+  color: var(--secondary-color-dark);
+}
+
+body.dark-mode .news-meta {
+  color: var(--secondary-color-dark);
+}
+
+body.dark-mode .github-stat {
+  color: var(--secondary-color-dark);
 }
